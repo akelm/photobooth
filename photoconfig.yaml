@@ -1,0 +1,50 @@
+autopress : False
+pin_camera_btn : 17
+pin_arcade_led : 4
+startup_delay : 2
+total_pics : 3
+prep_delay : 3
+timeout_email : 3
+finish_time : 2
+
+camera:
+  noprev : True
+  photo_wh: #
+    - 1920
+    - 1152
+  screen_wh: #
+    - 800
+    - 480
+  photo_countdown_time: 3 #
+  photo_playback_time: 3 #
+  filters: #
+    - 'negative'
+    - 'solarize'
+    - 'sketch'
+    - 'emboss'
+    - 'oilpaint'
+    - 'watercolor'
+    - 'colorswap'
+    - 'washedout'
+    - 'posterise'
+    - 'cartoon'
+
+paths:
+  photopath: photo
+  addr : addr
+  piclist : addr/!tmp
+  garbage: addr/!garbage
+  startup1 : disp/startup_1.png
+  startup2 : disp/fraktal.png
+  introimg1 : disp/intro_1.png
+  introimg2 : disp/intro_2.png
+  processingimg : disp/processing.png
+  email_image : disp/get_email.png
+  finished_image : disp/all_done.png
+  getready : disp/get_ready_
+  emailmessage : misc/email_message.html
+
+smtp:
+  login : yourloginhere
+  domain : domainname # e.g. gmail.com
+  password : yourpasswdhere
