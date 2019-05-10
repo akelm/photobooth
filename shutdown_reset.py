@@ -26,12 +26,12 @@ cnt = counter()
 gpio.add_event_detect(PIN, gpio.FALLING, callback=lambda x: cnt.inc(), bouncetime=500)
 
 while True:
-    if cnt.count == 0:
+    if cnt.count == 1:
         sleep(5)
-    else:
-        if cnt.count == 1:
-            log.append("reboot")
-            os.system("sudo reboot")
-        else:
-            log.append("shutdown")
-            os.system("sudo shutdown -h now")
+    if cnt.count == 1:
+        log.append("reboot")
+        os.system("sudo reboot")
+    if cnt.count > 1:
+        log.append("shutdown")
+        os.system("sudo shutdown -h now")
+    sleep(1)
