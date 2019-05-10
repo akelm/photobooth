@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy
 from PyQt5.QtWidgets import QWidget, QLineEdit
 
 import photobooth
-from logging import Logging
+from photologging import Logging
 
 log = Logging()
 
@@ -52,7 +52,7 @@ class MainWindow(QWidget):
         for (key, val) in self.config['paths'].items():
             self.config['paths'][key] = os.path.join(realpath, val)
         self.make_gui()
-        self.foto_thread = self.FotoThread(config=self.config)
+        self.foto_thread = FotoThread(config=self.config)
         # connects the pyqtSignal with get_email method
         self.foto_thread.signal.connect(self.get_email)
         self.foto_thread.start()

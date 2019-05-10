@@ -4,7 +4,7 @@
 A script than sends emails with photos that is supposed to run continuously.
 
 Uses photoconfig.yaml for SMTP settings and locations of files with addresses and photo locations.
-Names of the files are e-mail addresses and their content are paths to images being sent to the address.
+Names of the files are e-mail addresses and their content are paths to images sent to the address.
 '''
 
 import os
@@ -16,14 +16,14 @@ from time import sleep
 
 import yaml
 
-from photoutils import Logging
+from photologging import Logging
 
 log = Logging()
 
 # globals
-with open("photoconfig.yaml", 'r') as stream:
-    config = yaml.full_load(stream)
 path = os.path.dirname(os.path.realpath(__file__))
+with open(os.path.join(path,"photoconfig.yaml"), 'r') as stream:
+    config = yaml.full_load(stream)
 FILELISTDIR = os.path.join(path, config['paths']['addr'])
 emailpath = os.path.join(path, config['paths']['emailmessage'])
 with open(emailpath, 'r') as stream:

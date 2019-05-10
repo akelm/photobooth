@@ -8,10 +8,14 @@ The Photobooth was created as an exposition of ["Fraktal"
   by ["EB Photo Booth"](https://www.hackster.io/ericBcreator/photo-booth-powered-by-a-raspberry-pi-23b491).
 Shortly, the Photobooth takes photos and sends them by e-mail.
 
-![alt text](misc/fotobudka.jpg "Fotobudka")
+![alt text](misc/photobooth.jpg "The Photobooth")
 
 # Authorship
- Anna Kelm, Agnieszka Jamrozik, and Karol Chyliński
+ Anna Kelm, Agnieszka Jamrozik, Karol Chyliński, and Piotr Plebański
+
+# Acknowledgements
+We thank Wojciech Skorupski for manufacturing the housing of The Photobooth.
+
 # Hardware
 * RaspberryPi (here: 3 model B)
 * RaspberryPi Camera (here: V2)

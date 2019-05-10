@@ -4,16 +4,19 @@ Projekt Koła Naukowego ["Fraktal"](https://www.facebook.com/fraktal.UKSW) przy 
 PIKNIKU NAUKOWYM POLSKIEGO RADIA
 I CENTRUM NAUKI KOPERNIK
 
-![alt text](misc/fotobudka.jpg "Fotobudka")
+![alt text](misc/photobooth.jpg "Fotobudka")
 
 # Autorzy
- Autorami projektu są Anna Kelm, Agnieszka Jamrozik i K. Ch.
+ Autorami projektu są Anna Kelm, Agnieszka Jamrozik, Karol Chyliński i Piotr Plebański
 # Użyte materiały
 * RaspberryPi (u nas: wersja 3 model B)
 * RaspberryPi Camera (u nas: V2)
 * Wyświetlacz, najlepiej dotykowy do wpisywania adresu e-mail (u nas: ekran dotykowy rezystancyjny Waveshare 5'')
 * przycisk z diodą LED (wyjścia przycisku i LED-a obsługiwane z interfesju GPIO RaspberryPi)
 * Różne dodatki (obudowa, oświetlenie...)
+
+# Podziękowania
+Dziękujemy Wojciechowi Skorupskiemu za wyprodukowanie obudowy do fotobudki.
 
 # Uruchomienie skryptów
 ## Wymagane pakiety spoza obrazu "2019-04-08-raspbian-stretch-full"

@@ -7,7 +7,7 @@ from time import sleep
 import yaml
 
 from photoutils import PushButton, LedButton, Camera
-from logging import Logging
+from photologging import Logging
 
 log = Logging()
 
@@ -60,8 +60,9 @@ class Photo:
         self.pressbutton = PushButton(buttonbcm=self.config['pin_camera_btn'],
                                       autopress=self.config['autopress'])
         self.camera = Camera(self.config['camera'])
+        self.finishov = False
 
-    def wait_for_press(self, im1='', im2=''):
+    def wait_for_press(self, im1='', im2='',ov=False):
         ''' waits for button press with LED blinking and alternating images on display
 
         Paramters
@@ -76,6 +77,7 @@ class Photo:
         ov2 = None
         if im1:
             ov1 = self.camera.overlay_image(im1, 0, 3)
+            self.camera.remove_overlay(ov)
         if im2:
             ov2 = self.camera.overlay_image(im2, 0, 4)
         self.pressbutton.detect_press()
@@ -89,10 +91,12 @@ class Photo:
         if ov1:
             self.camera.remove_overlay(ov1)
         if ov2:
-            self.camera.remove_overlay(ov2)
+            ov2.alpha = 255
+            return ov2
+        return None
 
 
-    def taking_photo(self, num=1, iffilter=False):
+    def taking_photo(self, num=1, iffilter=False, ov=False):
         '''sets the image target file name and captures the image
 
         Parameters
@@ -109,7 +113,11 @@ class Photo:
         self.photopaths.append(filepath)
         # prep delay
         grnum = 1 if num==1 else (3 if num ==  self.config['total_pics'] else 2)
-        self.camera.overlay_image(self.config['paths']['getready'] + str(grnum) + ".png", self.config['prep_delay'])
+        ov1=self.camera.overlay_image(self.config['paths']['getready'] + str(grnum) + ".png")
+        if ov:
+            self.camera.remove_overlay(ov)
+        sleep(self.config['prep_delay'])
+        self.camera.remove_overlay(ov1)
         # photo
         self.camera.take_photo(filepath, iffilter)
         with open(self.config['paths']['piclist'], 'a') as addrfile:
@@ -119,19 +127,23 @@ class Photo:
 
     def prep_and_photo(self):
         log.append("Press the button to take a photo")
-        self.wait_for_press(im1=self.config['paths']['introimg1'], im2=self.config['paths']['introimg2'])
+        ov2=self.wait_for_press(im1=self.config['paths']['introimg1'], im2=self.config['paths']['introimg2'], ov=self.finishov)
         log.append("pressed")
         self.ledbutton.turn_on()
         log.append("fraktal")
-        self.camera.overlay_image(im=self.config['paths']['startup2'], duration=self.config['startup_delay'])
+        ov1=self.camera.overlay_image(im=self.config['paths']['startup2'])
+        self.camera.remove_overlay(ov2)
+        sleep(self.config['startup_delay'])
         log.append("starting")
-        self.camera.overlay_image(im=self.config['paths']['startup1'], duration=self.config['startup_delay'])
+        ov2=self.camera.overlay_image(im=self.config['paths']['startup1'])
+        self.camera.remove_overlay(ov1)
+        sleep(self.config['startup_delay'])
         log.append("clearing tmp photo locations file")
         if os.path.exists(self.config['paths']['piclist']):
             os.rename(self.config['paths']['piclist'],
                       self.config['paths']['garbage'] + str(datetime.datetime.now()).split('.')[0])
-        self.photopaths.clear()
-        self.taking_photo(1)
+        self.photopaths=[]
+        self.taking_photo(1, ov=ov2)
         for photo_number in range(2, self.config['total_pics'] + 1):
             self.taking_photo(num=photo_number, iffilter=True)
         with open(self.config['paths']['piclist'], 'a') as addrfile:
@@ -145,14 +157,17 @@ class Photo:
         # after press, email is gathered and control goes to finishing
 
     def finishing(self):
-        self.camera.set_opaque()
         self.ledbutton.turn_on()
         log.append("processing")
-        self.camera.overlay_image(im=self.config['paths']['processingimg'], duration=self.config['startup_delay'])
+        ov1=self.camera.overlay_image(im=self.config['paths']['processingimg'])
+        sleep(self.config['startup_delay'])
+        self.camera.set_opaque()
         log.append("preview")
         self.camera.img_preview(self.photopaths)
         log.append("finish img")
-        self.camera.overlay_image(self.config['paths']['finished_image'], self.config['finish_time'])
+        self.finishov=self.camera.overlay_image(self.config['paths']['finished_image'])
+        self.camera.remove_overlay(ov1)
+        sleep(self.config['finish_time'])
         log.append("All done!")
 
     def close(self):

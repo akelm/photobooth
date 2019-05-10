@@ -48,10 +48,7 @@ class PushButton:
             log.append("waits for press")
 
     def set_pressed(self):
-        if gpio.input(self.buttonbcm):
-            log.append("false trigger")
-            return
-        sleep(0.3)
+        sleep(0.1)
         if gpio.input(self.buttonbcm):
             log.append("false trigger")
             return

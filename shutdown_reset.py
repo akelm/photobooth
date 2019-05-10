@@ -19,17 +19,14 @@ class Counter:
         self.pin = pin
         gpio.setmode(gpio.BCM)
         gpio.setup(self.pin, gpio.IN, pull_up_down=gpio.PUD_UP)
-        gpio.add_event_detect(PIN, gpio.FALLING, callback=lambda x: self.callback(), bouncetime=300)
+        gpio.add_event_detect(PIN, gpio.FALLING, callback=lambda x: self.callback(), bouncetime=500)
 
     def callback(self):
+        sleep(0.1)
         if gpio.input(self.pin):
             log.append("false trigger")
             return
-        sleep(0.3)
-        if gpio.input(self.pin):
-            log.append("false trigger")
-            return
-        cnt.count += 1
+        self.count += 1
 
     def remove_callback(self):
         gpio.remove_event_detect(self.pin)
