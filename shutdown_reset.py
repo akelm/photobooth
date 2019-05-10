@@ -7,31 +7,47 @@ import RPi.GPIO as gpio
 
 from photologging import Logging
 
+PIN = 27  # pin (BCM)
+
 log = Logging()
 
-class counter:
-    def __init__(self):
+
+class Counter:
+    def __init__(self, pin):
         log.append("counter init")
         self.count = 0
+        self.pin = pin
+        gpio.setmode(gpio.BCM)
+        gpio.setup(self.pin, gpio.IN, pull_up_down=gpio.PUD_UP)
+        gpio.add_event_detect(PIN, gpio.FALLING, callback=lambda x: self.callback(), bouncetime=300)
 
-    def inc(self):
-        self.count += 1
+    def callback(self):
+        if gpio.input(self.pin):
+            log.append("false trigger")
+            return
+        sleep(0.3)
+        if gpio.input(self.pin):
+            log.append("false trigger")
+            return
+        cnt.count += 1
+
+    def remove_callback(self):
+        gpio.remove_event_detect(self.pin)
 
 
-PIN = 27  # pin (BCM) where
+if __name__ == "__main__":
 
-gpio.setmode(gpio.BCM)
-gpio.setup(PIN, gpio.IN, pull_up_down=gpio.PUD_UP)
-cnt = counter()
-gpio.add_event_detect(PIN, gpio.FALLING, callback=lambda x: cnt.inc(), bouncetime=500)
+    cnt = Counter(PIN)
 
-while True:
-    if cnt.count == 1:
-        sleep(5)
-    if cnt.count == 1:
-        log.append("reboot")
-        os.system("sudo reboot")
-    if cnt.count > 1:
-        log.append("shutdown")
-        os.system("sudo shutdown -h now")
-    sleep(1)
+    while True:
+        if cnt.count == 1:
+            sleep(5)
+        if cnt.count == 1:
+            log.append("reboot")
+            cnt.remove_callback()
+            os.system("sudo reboot")
+        if cnt.count > 1:
+            log.append("shutdown")
+            cnt.remove_callback()
+            os.system("sudo shutdown -h now")
+        sleep(1)
