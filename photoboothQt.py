@@ -33,7 +33,7 @@ class FotoThread(QThread):
             self.photo.prep_and_photo()
             # button pressed
             self.signal.emit()
-            # email is beeing collected now
+            # email is being collected now
             # displays "thank you" etc
             self.photo.finishing()
 
@@ -63,18 +63,20 @@ class MainWindow(QWidget):
         email = self.line.text().strip()
         self.line.setText("")
         if email:
-            # use email it as filename with images paths
-            if os.path.exists(self.config['paths']['piclist']):
-                newaddr = os.path.join(self.config['paths']['addr'], email)
-                os.rename(self.config['paths']['piclist'], newaddr)
+            # use email as filename with images paths
+            newaddr = os.path.join(self.config['paths']['addr'], email)
+            with open(newaddr, 'a') as outfile:
+                with open(self.config['paths']['piclist']) as infile:
+                    outfile.write(infile.read())
+            os.remove(self.config['paths']['piclist'])
         log.append(email)
 
     def on_button_press(self):
         sender = self.sender()
         if sender.text() == "<":
-            self.line.setText(self.line.text()[0:-1])
+            self.line.backspace()
         else:
-            self.line.setText(self.line.text() + sender.text())
+            self.line.insert(sender.text())
 
     def make_gui(self):
         self.name = None

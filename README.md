@@ -37,7 +37,7 @@ chmod +x *.sh
 ## Uruchomienie
 ### Kompletna Fotobudka z wysyłaniem zdjęć e-mailem:
 Ustaw konfigurację serwera e-mail (```photoconfig.yaml```). 
-W terminalu wejdź do folderu z Fotobudką i wpisz:
+Następnie w terminalu wejdź do folderu z Fotobudką i wpisz:
 ```
 ./photobooth_run.sh
 ```

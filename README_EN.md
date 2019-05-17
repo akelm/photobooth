@@ -50,7 +50,7 @@ chmod +x photobooth_run.sh
 ```
 ## Run
 ### Complete Photobooth with e-mail:
-First, setup SMTP e-mail config (```photoconfig.yaml```). 
+First, setup SMTP e-mail config (```photoconfig.yaml```). Then: 
 ```
 ./photobooth_run.sh
 ```

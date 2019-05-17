@@ -1,7 +1,7 @@
 from time import sleep
 
-import RPi.GPIO as gpio
 import picamera
+import RPi.GPIO as gpio
 from PIL import Image
 
 from photologging import Logging
@@ -55,7 +55,6 @@ class PushButton:
         self.waspressed = True
         log.append("button pressed")
         gpio.remove_event_detect(self.buttonbcm)
-
 
     def close(self):
         self.set_pressed()
@@ -144,7 +143,6 @@ class Camera:
         stops camera preview
     '''
 
-
     def __init__(self, config):
         log.append("camera start")
         self.config = config
@@ -226,11 +224,13 @@ class Camera:
 
         if not target:
             return
+        log.append("filter " + str(iffilter))
         if iffilter:
             self.currfilter += 1
             if self.currfilter >= self.filterlen:
                 self.currfilter -= self.filterlen
-                self.camera.image_effect = self.config['filters'][self.currfilter]
+            log.append("filter " + self.config['filters'][self.currfilter])
+            self.camera.image_effect = self.config['filters'][self.currfilter]
         for i in range(self.config['photo_countdown_time'], 0, -1):
             self.camera.annotate_text = "             ..." + str(i)
             sleep(1)
@@ -238,7 +238,7 @@ class Camera:
         self.camera.capture(target)
         self.camera.image_effect = 'none'
 
-    def img_preview(self, imglist=None,ov=False):
+    def img_preview(self, imglist=None, ov=False):
         '''displays preview of the captured photos
 
         Parameters

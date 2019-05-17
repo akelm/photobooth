@@ -65,7 +65,7 @@ class Photo:
     def wait_for_press(self, im1='', im2='',ov=False):
         ''' waits for button press with LED blinking and alternating images on display
 
-        Paramters
+        Parameters
         ------------
         im1 : str, optional
             path for image to be displayed on lower layer
@@ -112,7 +112,7 @@ class Photo:
         filepath = os.path.join(self.config['paths']['photopath'], filename)
         self.photopaths.append(filepath)
         # prep delay
-        grnum = 1 if num==1 else (3 if num ==  self.config['total_pics'] else 2)
+        grnum = 1 if num==1 else (3 if num == self.config['total_pics'] else 2)
         ov1=self.camera.overlay_image(self.config['paths']['getready'] + str(grnum) + ".png")
         if ov:
             self.camera.remove_overlay(ov)
@@ -146,8 +146,6 @@ class Photo:
         self.taking_photo(1, ov=ov2)
         for photo_number in range(2, self.config['total_pics'] + 1):
             self.taking_photo(num=photo_number, iffilter=True)
-        with open(self.config['paths']['piclist'], 'a') as addrfile:
-            addrfile.write("\n".join(self.photopaths))
         log.append("email instructions")
         self.camera.overlay_image(self.config['paths']['email_image'], self.config['timeout_email'])
         log.append("full transparency to get email")
