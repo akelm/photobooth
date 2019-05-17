@@ -53,7 +53,13 @@ class Photo:
         realpath = os.path.dirname(os.path.realpath(__file__))
         for (key, val) in self.config['paths'].items():
             self.config['paths'][key] = os.path.join(realpath, val)
+        if not os.path.exists(self.config['paths']['photopath']):
+            print(self.config['paths']['photopath'])
+            os.makedirs(self.config['paths']['photopath'])
         log.append("Saving to " + self.config['paths']['photopath'])
+        if not os.path.exists(self.config['paths']['addr']):
+            print(self.config['paths']['addr'])
+            os.makedirs(self.config['paths']['addr'])
 
         self.photopaths = []
         self.ledbutton = LedButton(buttonbcm=self.config['pin_arcade_led'])
