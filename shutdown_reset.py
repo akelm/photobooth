@@ -7,7 +7,7 @@ import RPi.GPIO as gpio
 
 from photologging import Logging
 
-PIN = 27  # pin (BCM)
+
 
 log = Logging()
 
@@ -31,20 +31,27 @@ class Counter:
     def remove_callback(self):
         gpio.remove_event_detect(self.pin)
 
+class ShutdownReset:
+    def init(self, config=None):
+        self.cnt = Counter(PIN)
+
+    def run(self):
+        while True:
+            if cnt.count == 1:
+                sleep(5)
+            if cnt.count == 1:
+                log.append("reboot")
+                cnt.remove_callback()
+                os.system("sudo reboot")
+            if cnt.count > 1:
+                log.append("shutdown")
+                cnt.remove_callback()
+                os.system("sudo shutdown -h now")
+            sleep(1)
+
 
 if __name__ == "__main__":
 
-    cnt = Counter(PIN)
+    ShutdownReset().run()
 
-    while True:
-        if cnt.count == 1:
-            sleep(5)
-        if cnt.count == 1:
-            log.append("reboot")
-            cnt.remove_callback()
-            os.system("sudo reboot")
-        if cnt.count > 1:
-            log.append("shutdown")
-            cnt.remove_callback()
-            os.system("sudo shutdown -h now")
-        sleep(1)
+
